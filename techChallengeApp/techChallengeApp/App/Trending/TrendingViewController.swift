@@ -8,8 +8,15 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class TrendingViewController: UIViewController {
 
+    private let screen = TrendingScreen()
+    
+    override func loadView() {
+        self.view = screen
+        screen.delegate = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
