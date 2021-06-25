@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1745A9A826851FB0008D0E5A /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1745A9A726851FB0008D0E5A /* AppColors.swift */; };
+		1745A9AA26852B01008D0E5A /* ithPoster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1745A9A926852B01008D0E5A /* ithPoster.jpg */; };
 		17FE898626850C13006C5DA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FE898526850C13006C5DA1 /* AppDelegate.swift */; };
 		17FE898826850C13006C5DA1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FE898726850C13006C5DA1 /* SceneDelegate.swift */; };
 		17FE898A26850C13006C5DA1 /* TrendingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FE898926850C13006C5DA1 /* TrendingViewController.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1745A9A726851FB0008D0E5A /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		1745A9A926852B01008D0E5A /* ithPoster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ithPoster.jpg; sourceTree = "<group>"; };
 		17FE898226850C13006C5DA1 /* techChallengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = techChallengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17FE898526850C13006C5DA1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17FE898726850C13006C5DA1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +75,7 @@
 				17FE898726850C13006C5DA1 /* SceneDelegate.swift */,
 				17FE898B26850C13006C5DA1 /* Main.storyboard */,
 				17FE898E26850C17006C5DA1 /* Assets.xcassets */,
+				1745A9A926852B01008D0E5A /* ithPoster.jpg */,
 				17FE899026850C17006C5DA1 /* LaunchScreen.storyboard */,
 				17FE899326850C17006C5DA1 /* Info.plist */,
 			);
@@ -110,6 +115,7 @@
 		17FE899D26850CE0006C5DA1 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				1745A9A726851FB0008D0E5A /* AppColors.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -184,6 +190,7 @@
 			files = (
 				17FE899226850C17006C5DA1 /* LaunchScreen.storyboard in Resources */,
 				17FE898F26850C17006C5DA1 /* Assets.xcassets in Resources */,
+				1745A9AA26852B01008D0E5A /* ithPoster.jpg in Resources */,
 				17FE898D26850C13006C5DA1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,6 +206,7 @@
 				17FE898A26850C13006C5DA1 /* TrendingViewController.swift in Sources */,
 				17FE898626850C13006C5DA1 /* AppDelegate.swift in Sources */,
 				17FE898826850C13006C5DA1 /* SceneDelegate.swift in Sources */,
+				1745A9A826851FB0008D0E5A /* AppColors.swift in Sources */,
 				17FE89A226850F57006C5DA1 /* TrendingCustomCell.swift in Sources */,
 				17FE89A026850EE3006C5DA1 /* ViewCode.swift in Sources */,
 			);
