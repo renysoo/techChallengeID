@@ -74,15 +74,11 @@ class TrendingCustomCell: UITableViewCell {
 extension TrendingCustomCell: ViewCode {
     func buildView() {
         addSubview(cardView)
-        cardView.addSubview(movieImage) //consertar depois
+        cardView.addSubview(movieImage)
         cardView.addSubview(movieLabel)
         cardView.addSubview(yearLabel)
     }
     
-    func getCardConstraint(attribute: NSLayoutConstraint.Attribute, constant: CGFloat) -> NSLayoutConstraint {
-        let const = NSLayoutConstraint(item: cardView, attribute: attribute, relatedBy: .equal, toItem: self, attribute: attribute, multiplier: 1, constant: constant)
-        return const
-    }
     
     func setupConstraints() {
         
@@ -105,7 +101,6 @@ extension TrendingCustomCell: ViewCode {
         movieLabel.bottomAnchor.constraint(equalTo: yearLabel.topAnchor, constant: -5).isActive = true
         movieLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20).isActive = true
         
-//        self.addConstraints([cardLeading, cardTrailing])
     }
     
     func setupAdditionalConfigs() {

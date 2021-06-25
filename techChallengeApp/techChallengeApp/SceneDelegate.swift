@@ -21,8 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: firstScene)
         
-        var firstViewController = TrendingViewController()
+//        var firstViewController = TrendingViewController()
         
+        let firstViewController = MovieDetailViewController()
+
         window?.rootViewController = firstViewController
         window?.makeKeyAndVisible()
 
