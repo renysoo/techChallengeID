@@ -57,7 +57,7 @@ class MovieDetailViewController: UIViewController {
         if checkFavoriteStatus() {
             
             while UserDefaults.standard.favoriteMovies.contains(presentedMovie!) {
-                if let itemToRemoveIndex = UserDefaults.standard.favoriteMovies.index(of: presentedMovie!) {
+                if let itemToRemoveIndex = UserDefaults.standard.favoriteMovies.firstIndex(of: presentedMovie!) {
                 UserDefaults.standard.favoriteMovies.remove(at: itemToRemoveIndex)
                 }
             }
@@ -71,8 +71,10 @@ class MovieDetailViewController: UIViewController {
     func changeColorFavoriteButton(){
         if checkFavoriteStatus() {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButton))
+            self.navigationItem.rightBarButtonItem?.tintColor = AppColors.red.color
         } else {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favoriteButton))
+            self.navigationItem.rightBarButtonItem?.tintColor = AppColors.white.color
         }
     }
     
