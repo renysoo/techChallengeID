@@ -8,6 +8,19 @@
 
 import Foundation
 
-class Genre: Decodable {
+struct GenreList: Codable {
+  let count: Int?
+  let results: [Genre]?
+    
+    
+}
+
+class Genre: Codable {
     let id: Int
+    let name: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+    }
 }

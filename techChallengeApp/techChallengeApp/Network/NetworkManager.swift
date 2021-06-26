@@ -45,5 +45,28 @@ final class NetworkManager {
         let url = URL(string: "https://image.tmdb.org/t/p/original" + url)!
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
+    
+    func fetchGenres(completionHandler: @escaping ([Genre]) -> Void){
+        let url = URL(string:"https://api.themoviedb.org/3/genre/movie/list?api_key=95bfdaa2a1bd5ee3b9aa276b69888c40&language=en-US")!
+
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+          if let error = error {
+            print("Error with fetching films: \(error)")
+            return
+          }
+
+          guard let httpResponse = response as? HTTPURLResponse,
+                (200...299).contains(httpResponse.statusCode) else {
+            print("Error with the response, unexpected status code: \(response)")
+            return
+          }
+
+          if let data = data,
+            let genreList = try? JSONDecoder().decode(GenreList.self, from: data) {
+            completionHandler(genreList.results ?? [])
+          }
+        })
+        task.resume()
+    }
 }
 
