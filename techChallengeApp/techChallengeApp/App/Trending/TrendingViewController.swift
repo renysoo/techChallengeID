@@ -11,11 +11,11 @@ import UIKit
 class TrendingViewController: UIViewController {
 
     
-    private var moviesList: [Movie]?
+    var moviesList: [Movie]?
     
     let network = NetworkManager()
 
-    private let screen = TrendingScreen()
+    let screen = TrendingScreen()
     
     var searchTask: DispatchWorkItem?
 
@@ -24,7 +24,7 @@ class TrendingViewController: UIViewController {
         screen.delegate = self
     }
     
-    fileprivate func fetchTrendingMovies() {
+    func fetchTrendingMovies() {
         network.fetchTrending { [weak self] (movies) in
             self?.moviesList = movies
             DispatchQueue.main.async {
@@ -34,7 +34,7 @@ class TrendingViewController: UIViewController {
         }
     }
     
-    fileprivate func searchMovieBy(searchTerm: String) {
+    func searchMovieBy(searchTerm: String) {
         network.fetchSearch(term: searchTerm) { [weak self] (movies) in
             self?.moviesList = movies
              DispatchQueue.main.async {
@@ -51,7 +51,9 @@ class TrendingViewController: UIViewController {
         screen.moviesTableView.dataSource = self
         screen.moviesTableView.register(MovieCustomCell.self, forCellReuseIdentifier: "moviesCell")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false 
+        view.addGestureRecognizer(tap)
         fetchTrendingMovies()
     }
     
@@ -64,65 +66,12 @@ class TrendingViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
 }
 
-extension TrendingViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        moviesList?.count ?? 0
-    }
-    
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        let cell = (tableView.dequeueReusableCell(withIdentifier: "moviesCell") as? MovieCustomCell)!
-        cell.movieLabel.text = moviesList?[indexPath.row].title
-        cell.movieLabel.contentMode = .bottomRight
-        cell.yearLabel.text = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
-        cell.movieImage.loadImageUsingCache(withUrl: "https://image.tmdb.org/t/p/original" +  ((moviesList?[indexPath.row].posterPath) ?? ""))
-        return cell
-        
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let newViewController = MovieDetailViewController(movie: (moviesList?[indexPath.row])!)
-        self.navigationController?.pushViewController(newViewController, animated: true)
-
-    }
-    
-   
-    
-}
-
-extension TrendingViewController: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchMovieBy(searchTerm: searchBar.text ?? "")
-       }
-       
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.searchTask?.cancel()
-        
-        let task = DispatchWorkItem { [weak self] in
-            if searchText == ""{
-                self?.fetchTrendingMovies()
-            } else {
-                self?.searchMovieBy(searchTerm: searchText)
-            }
-        }
-        self.searchTask = task
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.75, execute: task)
-    }
-    
-    
-       func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-           fetchTrendingMovies()
-       }
-}
-
-extension TrendingViewController: TrendingScreenDelegate {
-    
-}
 
