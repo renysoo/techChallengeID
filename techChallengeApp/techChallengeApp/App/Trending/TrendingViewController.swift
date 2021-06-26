@@ -10,6 +10,9 @@ import UIKit
 
 class TrendingViewController: UIViewController {
 
+    
+    private var moviesList: [Movie]?
+
     private let screen = TrendingScreen()
     
     override func loadView() {
@@ -24,15 +27,19 @@ class TrendingViewController: UIViewController {
         screen.moviesTableView.dataSource = self
         screen.moviesTableView.register(TrendingCustomCell.self, forCellReuseIdentifier: "moviesCell")
         
+        NetworkManager().fetchTrending { [weak self] (movies) in
+             self?.moviesList = movies
+             DispatchQueue.main.async {
+                self?.screen.moviesTableView.reloadData()
+            }
+        }
     }
-
-
 }
 
 extension TrendingViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        33
+        moviesList?.count ?? 0
     }
     
 
@@ -40,10 +47,10 @@ extension TrendingViewController: UITableViewDelegate, UITableViewDataSource, UI
         
         
         let cell = (tableView.dequeueReusableCell(withIdentifier: "moviesCell") as? TrendingCustomCell)!
-        cell.movieImage.image = UIImage(named: "ithPoster.jpg")
-        cell.movieLabel.text = "In the Heights"
+        cell.movieLabel.text = moviesList?[indexPath.row].title
         cell.movieLabel.contentMode = .bottomRight
-        cell.yearLabel.text = "2021"
+        cell.yearLabel.text = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
+        cell.movieImage.loadImageUsingCache(withUrl: "https://image.tmdb.org/t/p/original" +  ((moviesList?[indexPath.row].posterPath)!))
         return cell
         
     }

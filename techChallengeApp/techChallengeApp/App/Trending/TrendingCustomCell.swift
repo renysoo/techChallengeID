@@ -69,7 +69,6 @@ class TrendingCustomCell: UITableViewCell {
     
     
     
-    
 }
 extension TrendingCustomCell: ViewCode {
     func buildView() {
@@ -104,7 +103,6 @@ extension TrendingCustomCell: ViewCode {
     }
     
     func setupAdditionalConfigs() {
-        
     }
     
     
