@@ -32,6 +32,8 @@ class TrendingViewController: UIViewController {
              self?.moviesList = movies
              DispatchQueue.main.async {
                 self?.screen.moviesTableView.reloadData()
+//                UserDefaults.standard.favoriteMovies = self?.moviesList ?? []
+                
             }
         }
     }

@@ -33,3 +33,15 @@ struct Movie: Codable {
         case releaseDate = "release_date"
     }
 }
+
+extension UserDefaults {
+    var favoriteMovies: [Movie] {
+        get {
+            guard let data = UserDefaults.standard.data(forKey: "favorite") else { return [] }
+            return (try? PropertyListDecoder().decode([Movie].self, from: data)) ?? []
+        }
+        set {
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey: "favorite")
+        }
+    }
+}

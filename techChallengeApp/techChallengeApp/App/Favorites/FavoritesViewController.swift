@@ -31,12 +31,13 @@ class FavoritesViewController: UIViewController {
         screen.moviesTableView.register(MovieCustomCell.self, forCellReuseIdentifier: "moviesCell")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
 
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        favoritesList = UserDefaults.standard.favoriteMovies
+        screen.moviesTableView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
