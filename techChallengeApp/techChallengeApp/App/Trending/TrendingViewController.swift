@@ -55,6 +55,15 @@ extension TrendingViewController: UITableViewDelegate, UITableViewDataSource, UI
         
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let completeUrl = String("https://image.tmdb.org/t/p/original" +  (moviesList?[indexPath.row].posterPath ?? ""))
+        let newTitle = moviesList?[indexPath.row].title
+        let newYear = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
+        
+        let newViewController = MovieDetailViewController(url: completeUrl, title: newTitle!, year: newYear, overview: (moviesList?[indexPath.row].overview)!)
+        
+            self.present(newViewController, animated: true, completion: nil)
+    }
     
 }
 
