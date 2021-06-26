@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TrendingCustomCell: UITableViewCell {
+class MovieCustomCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -70,7 +70,7 @@ class TrendingCustomCell: UITableViewCell {
     
     
 }
-extension TrendingCustomCell: ViewCode {
+extension MovieCustomCell: ViewCode {
     func buildView() {
         addSubview(cardView)
         cardView.addSubview(movieImage)

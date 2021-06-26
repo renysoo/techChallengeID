@@ -25,14 +25,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var trendingViewController = TrendingViewController()
         let trendingNavigationController = UINavigationController(rootViewController: trendingViewController)
         trendingNavigationController.navigationBar.isHidden = true
-        trendingNavigationController.navigationBar.barTintColor = AppColors.background.color
+        trendingNavigationController.navigationBar.barTintColor = AppColors.tab.color
+        trendingNavigationController.navigationBar.tintColor = AppColors.white.color
+        trendingNavigationController.navigationBar.isTranslucent = false
+        
         
         trendingNavigationController.tabBarItem = UITabBarItem(title: "Trending", image: UIImage(systemName: "star")?.withTintColor(AppColors.white.color), tag: 0)
         
-        var favoriteViewController = TrendingViewController()
+        var favoriteViewController = FavoritesViewController()
         let favoritesNavigationController = UINavigationController(rootViewController: favoriteViewController)
         favoritesNavigationController.navigationBar.isHidden = true
-        favoritesNavigationController.navigationBar.barTintColor = AppColors.background.color
+        favoritesNavigationController.navigationBar.barTintColor = AppColors.tab.color
+        favoritesNavigationController.navigationBar.tintColor = AppColors.white.color
+        favoritesNavigationController.navigationBar.isTranslucent = false
+
         
         favoritesNavigationController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart")?.withTintColor(AppColors.white.color), tag: 0)
         
