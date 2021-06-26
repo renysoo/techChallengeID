@@ -38,6 +38,11 @@ class FavoritesViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         favoritesList = UserDefaults.standard.favoriteMovies
         screen.moviesTableView.reloadData()
+        if favoritesList!.count == 0 {
+            screen.noFavoritesLabel.isHidden = false
+        } else {
+            screen.noFavoritesLabel.isHidden = true
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,7 +60,6 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource, U
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
         let cell = (tableView.dequeueReusableCell(withIdentifier: "moviesCell") as? MovieCustomCell)!
         cell.movieLabel.text = favoritesList?[indexPath.row].title
         cell.movieLabel.contentMode = .bottomRight
@@ -66,11 +70,8 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let completeUrl = String("https://image.tmdb.org/t/p/original" +  (favoritesList?[indexPath.row].posterPath ?? ""))
-        let newTitle = favoritesList?[indexPath.row].title
-        let newYear = String(favoritesList?[indexPath.row].releaseDate.prefix(4) ?? "")
         
-        let newViewController = MovieDetailViewController(url: completeUrl, title: newTitle!, year: newYear, overview: (favoritesList?[indexPath.row].overview)!)
+        let newViewController = MovieDetailViewController(movie: (favoritesList?[indexPath.row])!)
         self.navigationController?.pushViewController(newViewController, animated: true)
 
     }
