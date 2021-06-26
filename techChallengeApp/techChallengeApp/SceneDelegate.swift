@@ -21,11 +21,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: firstScene)
         
-        var firstViewController = TrendingViewController()
         
-//        let firstViewController = MovieDetailViewController()
+        var trendingViewController = TrendingViewController()
+        let trendingNavigationController = UINavigationController(rootViewController: trendingViewController)
+        trendingNavigationController.navigationBar.isHidden = true
+        trendingNavigationController.navigationBar.barTintColor = AppColors.background.color
+        
+        trendingNavigationController.tabBarItem = UITabBarItem(title: "Trending", image: UIImage(systemName: "star")?.withTintColor(AppColors.white.color), tag: 0)
+        
+        var favoriteViewController = TrendingViewController()
+        let favoritesNavigationController = UINavigationController(rootViewController: favoriteViewController)
+        favoritesNavigationController.navigationBar.isHidden = true
+        favoritesNavigationController.navigationBar.barTintColor = AppColors.background.color
+        
+        favoritesNavigationController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart")?.withTintColor(AppColors.white.color), tag: 0)
+        
+        let tabBarController = UITabBarController()
+        let controllers = [trendingNavigationController,favoritesNavigationController]
+        tabBarController.viewControllers = controllers
+        tabBarController.tabBar.barTintColor = AppColors.tab.color
+        tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.tintColor = AppColors.white.color
 
-        window?.rootViewController = firstViewController
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
 
     }

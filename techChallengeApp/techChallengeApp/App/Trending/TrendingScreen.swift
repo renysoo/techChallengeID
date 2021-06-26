@@ -34,9 +34,11 @@ class TrendingScreen: UIView {
         searchBar.tintColor = AppColors.tab.color
         searchBar.barTintColor = AppColors.background.color
         searchBar.backgroundColor = .clear
-        searchBar.searchTextField.tintColor = AppColors.white.color
         searchBar.placeholder = " Search Here....."
         searchBar.sizeToFit()
+        searchBar.isTranslucent = true
+        searchBar.searchTextField.backgroundColor = AppColors.tab.color
+        searchBar.searchTextField.textColor = AppColors.white.color
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
     }()
