@@ -26,13 +26,24 @@ class TrendingViewController: UIViewController {
         screen.moviesTableView.delegate = self
         screen.moviesTableView.dataSource = self
         screen.moviesTableView.register(TrendingCustomCell.self, forCellReuseIdentifier: "moviesCell")
-        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+
         NetworkManager().fetchTrending { [weak self] (movies) in
              self?.moviesList = movies
              DispatchQueue.main.async {
                 self?.screen.moviesTableView.reloadData()
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }
 
@@ -61,8 +72,8 @@ extension TrendingViewController: UITableViewDelegate, UITableViewDataSource, UI
         let newYear = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
         
         let newViewController = MovieDetailViewController(url: completeUrl, title: newTitle!, year: newYear, overview: (moviesList?[indexPath.row].overview)!)
-        
-            self.present(newViewController, animated: true, completion: nil)
+        self.navigationController?.pushViewController(newViewController, animated: true)
+
     }
     
 }

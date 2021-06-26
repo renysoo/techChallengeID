@@ -22,10 +22,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: firstScene)
         
         var firstViewController = TrendingViewController()
-        
+        let navigationController = UINavigationController(rootViewController: firstViewController)
+        navigationController.navigationBar.isHidden = true
+        navigationController.navigationBar.barTintColor = AppColors.background.color
+
 //        let firstViewController = MovieDetailViewController()
 
-        window?.rootViewController = firstViewController
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
     }
