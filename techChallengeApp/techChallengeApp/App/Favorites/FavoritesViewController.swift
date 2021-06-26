@@ -1,19 +1,22 @@
 //
-//  ViewController.swift
+//  FavoritesViewController.swift
 //  techChallengeApp
 //
-//  Created by René Melo de Lucena on 24/06/21.
+//  Created by René Melo de Lucena on 26/06/21.
 //  Copyright © 2021 René Melo de Lucena. All rights reserved.
 //
 
+import Foundation
+
+
 import UIKit
 
-class TrendingViewController: UIViewController {
+class FavoritesViewController: UIViewController {
 
     
-    private var moviesList: [Movie]?
+    private var favoritesList: [Movie]?
 
-    private let screen = TrendingScreen()
+    private let screen = FavoritesScreen()
     
     override func loadView() {
         self.view = screen
@@ -28,12 +31,7 @@ class TrendingViewController: UIViewController {
         screen.moviesTableView.register(MovieCustomCell.self, forCellReuseIdentifier: "moviesCell")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
 
-        NetworkManager().fetchTrending { [weak self] (movies) in
-             self?.moviesList = movies
-             DispatchQueue.main.async {
-                self?.screen.moviesTableView.reloadData()
-            }
-        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,10 +45,10 @@ class TrendingViewController: UIViewController {
     }
 }
 
-extension TrendingViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        moviesList?.count ?? 0
+        favoritesList?.count ?? 0
     }
     
 
@@ -58,27 +56,26 @@ extension TrendingViewController: UITableViewDelegate, UITableViewDataSource, UI
         
         
         let cell = (tableView.dequeueReusableCell(withIdentifier: "moviesCell") as? MovieCustomCell)!
-        cell.movieLabel.text = moviesList?[indexPath.row].title
+        cell.movieLabel.text = favoritesList?[indexPath.row].title
         cell.movieLabel.contentMode = .bottomRight
-        cell.yearLabel.text = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
-        cell.movieImage.loadImageUsingCache(withUrl: "https://image.tmdb.org/t/p/original" +  ((moviesList?[indexPath.row].posterPath)!))
+        cell.yearLabel.text = String(favoritesList?[indexPath.row].releaseDate.prefix(4) ?? "")
+        cell.movieImage.loadImageUsingCache(withUrl: "https://image.tmdb.org/t/p/original" +  ((favoritesList?[indexPath.row].posterPath)!))
         return cell
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let completeUrl = String("https://image.tmdb.org/t/p/original" +  (moviesList?[indexPath.row].posterPath ?? ""))
-        let newTitle = moviesList?[indexPath.row].title
-        let newYear = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
+        let completeUrl = String("https://image.tmdb.org/t/p/original" +  (favoritesList?[indexPath.row].posterPath ?? ""))
+        let newTitle = favoritesList?[indexPath.row].title
+        let newYear = String(favoritesList?[indexPath.row].releaseDate.prefix(4) ?? "")
         
-        let newViewController = MovieDetailViewController(url: completeUrl, title: newTitle!, year: newYear, overview: (moviesList?[indexPath.row].overview)!)
+        let newViewController = MovieDetailViewController(url: completeUrl, title: newTitle!, year: newYear, overview: (favoritesList?[indexPath.row].overview)!)
         self.navigationController?.pushViewController(newViewController, animated: true)
 
     }
     
 }
 
-extension TrendingViewController: TrendingScreenDelegate {
+extension FavoritesViewController: FavoritesScreenDelegate {
     
 }
-
