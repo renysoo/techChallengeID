@@ -12,7 +12,7 @@ protocol MovieDetailScreenDelegate {
     
 }
 
-class MovieDetailScreen: UIView {
+class MovieDetailScreen: UIView, UIScrollViewDelegate {
     
     var delegate: MovieDetailScreenDelegate!
     
@@ -74,6 +74,27 @@ class MovieDetailScreen: UIView {
         return view
     }()
     
+    let genreLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.text = "Drama"
+        view.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        view.textAlignment = .center
+        view.sizeToFit()
+        view.textColor = AppColors.white.color
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let genreLabelStroke: UIView = {
+        let view = UIView(frame: .zero)
+        view.tintColor = .clear
+        view.layer.borderColor = AppColors.white.color.cgColor
+        view.layer.borderWidth = 1
+        view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let overviewLabel: UILabel = {
         let view = UILabel(frame: .zero)
         view.text = "A film version of the Broadway musical in which Usnavi, a sympathetic New York bodega owner, saves every penny every day as he imagines and sings about a better life."
@@ -94,6 +115,8 @@ extension MovieDetailScreen: ViewCode {
         cardView.addSubview(movieImage)
         cardView.addSubview(movieLabel)
         cardView.addSubview(yearLabel)
+        cardView.addSubview(genreLabel)
+        cardView.addSubview(genreLabelStroke)
         cardView.addSubview(overviewLabel)
         self.backgroundColor = AppColors.background.color
 
@@ -102,10 +125,10 @@ extension MovieDetailScreen: ViewCode {
     func setupConstraints() {
         let screenBounds = UIScreen.main.bounds
         
-        cardView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75).isActive = true
+        cardView.topAnchor.constraint(equalTo: self.topAnchor, constant: screenBounds.height*0.02).isActive = true
+        cardView.bottomAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: screenBounds.height*0.04).isActive = true
         cardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.85).isActive = true
         cardView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        cardView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
 
         movieImage.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.8).isActive = true
@@ -120,15 +143,22 @@ extension MovieDetailScreen: ViewCode {
         yearLabel.topAnchor.constraint(equalTo: movieLabel.bottomAnchor, constant: 5).isActive = true
         yearLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
         
+        genreLabel.centerXAnchor.constraint(equalTo: genreLabelStroke.centerXAnchor).isActive = true
+        genreLabel.centerYAnchor.constraint(equalTo: genreLabelStroke.centerYAnchor).isActive = true
         
+        genreLabelStroke.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
+        genreLabelStroke.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant:6).isActive = true
+        genreLabelStroke.widthAnchor.constraint(equalTo: genreLabel.widthAnchor, constant: 15).isActive = true
+        genreLabelStroke.heightAnchor.constraint(equalTo: genreLabel.heightAnchor, constant: 5).isActive = true
+
         //Corrigir quando adicionar os generos
         overviewLabel.widthAnchor.constraint(equalTo: movieImage.widthAnchor).isActive = true
         overviewLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        overviewLabel.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant: 5).isActive = true
+        overviewLabel.topAnchor.constraint(equalTo: genreLabelStroke.bottomAnchor, constant: 8).isActive = true
+        
     }
     
     func setupAdditionalConfigs() {
-        
     }
     
     
