@@ -74,26 +74,26 @@ class MovieDetailScreen: UIView, UIScrollViewDelegate {
         return view
     }()
     
-    let genreLabel: UILabel = {
-        let view = UILabel(frame: .zero)
-        view.text = "Drama"
-        view.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        view.textAlignment = .center
-        view.sizeToFit()
-        view.textColor = AppColors.white.color
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let genreLabelStroke: UIView = {
-        let view = UIView(frame: .zero)
-        view.tintColor = .clear
-        view.layer.borderColor = AppColors.white.color.cgColor
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    let genreLabel: UILabel = {
+//        let view = UILabel(frame: .zero)
+//        view.text = "Drama"
+//        view.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+//        view.textAlignment = .center
+//        view.sizeToFit()
+//        view.textColor = AppColors.white.color
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+//
+//    let genreLabelStroke: UIView = {
+//        let view = UIView(frame: .zero)
+//        view.tintColor = .clear
+//        view.layer.borderColor = AppColors.white.color.cgColor
+//        view.layer.borderWidth = 1
+//        view.layer.cornerRadius = 10
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     
     let overviewLabel: UILabel = {
         let view = UILabel(frame: .zero)
@@ -107,6 +107,58 @@ class MovieDetailScreen: UIView, UIScrollViewDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    func createGenreLabels(genres:[Genre]){
+        var trailingVariation = movieImage.trailingAnchor
+        for genre in genres {
+            
+            if genres.count > 3 {
+                if genre.name == genres[3].name {
+                    break
+                }
+            }
+            
+            let genreLabel: UILabel = {
+                let view = UILabel(frame: .zero)
+                view.text = genre.name
+                view.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+                view.textAlignment = .center
+                view.sizeToFit()
+                view.textColor = AppColors.white.color
+                view.translatesAutoresizingMaskIntoConstraints = false
+                return view
+            }()
+            
+            let genreLabelStroke: UIView = {
+                let view = UIView(frame: .zero)
+                view.tintColor = .clear
+                view.layer.borderColor = AppColors.white.color.cgColor
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 10
+                view.translatesAutoresizingMaskIntoConstraints = false
+                return view
+            }()
+            
+            cardView.addSubview(genreLabel)
+            cardView.addSubview(genreLabelStroke)
+            
+            genreLabel.centerXAnchor.constraint(equalTo: genreLabelStroke.centerXAnchor).isActive = true
+            genreLabel.centerYAnchor.constraint(equalTo: genreLabelStroke.centerYAnchor).isActive = true
+            
+            if genre.name == genres[0].name {
+                genreLabelStroke.trailingAnchor.constraint(equalTo: trailingVariation, constant: 0).isActive = true
+            } else {
+                genreLabelStroke.trailingAnchor.constraint(equalTo: trailingVariation, constant: -5).isActive = true
+            }
+            genreLabelStroke.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant:6).isActive = true
+            genreLabelStroke.widthAnchor.constraint(equalTo: genreLabel.widthAnchor, constant: 15).isActive = true
+            genreLabelStroke.heightAnchor.constraint(equalTo: genreLabel.heightAnchor, constant: 5).isActive = true
+            
+            overviewLabel.topAnchor.constraint(equalTo: genreLabelStroke.bottomAnchor, constant: 8).isActive = true
+
+            trailingVariation = genreLabelStroke.leadingAnchor
+        }
+    }
 }
 
 extension MovieDetailScreen: ViewCode {
@@ -115,8 +167,6 @@ extension MovieDetailScreen: ViewCode {
         cardView.addSubview(movieImage)
         cardView.addSubview(movieLabel)
         cardView.addSubview(yearLabel)
-        cardView.addSubview(genreLabel)
-        cardView.addSubview(genreLabelStroke)
         cardView.addSubview(overviewLabel)
         self.backgroundColor = AppColors.background.color
 
@@ -142,19 +192,9 @@ extension MovieDetailScreen: ViewCode {
         
         yearLabel.topAnchor.constraint(equalTo: movieLabel.bottomAnchor, constant: 5).isActive = true
         yearLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        
-        genreLabel.centerXAnchor.constraint(equalTo: genreLabelStroke.centerXAnchor).isActive = true
-        genreLabel.centerYAnchor.constraint(equalTo: genreLabelStroke.centerYAnchor).isActive = true
-        
-        genreLabelStroke.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        genreLabelStroke.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant:6).isActive = true
-        genreLabelStroke.widthAnchor.constraint(equalTo: genreLabel.widthAnchor, constant: 15).isActive = true
-        genreLabelStroke.heightAnchor.constraint(equalTo: genreLabel.heightAnchor, constant: 5).isActive = true
 
-        //Corrigir quando adicionar os generos
         overviewLabel.widthAnchor.constraint(equalTo: movieImage.widthAnchor).isActive = true
         overviewLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        overviewLabel.topAnchor.constraint(equalTo: genreLabelStroke.bottomAnchor, constant: 8).isActive = true
         
     }
     

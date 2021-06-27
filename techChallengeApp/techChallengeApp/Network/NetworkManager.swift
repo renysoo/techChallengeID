@@ -82,7 +82,7 @@ final class NetworkManager {
             }
 
             if let data = data, let genreList = try? JSONDecoder().decode(GenreList.self, from: data) {
-                completionHandler(genreList.results ?? [])
+                completionHandler(genreList.genres ?? [])
             }
         })
         task.resume()
