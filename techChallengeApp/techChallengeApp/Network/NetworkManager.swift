@@ -12,7 +12,6 @@ import Foundation
 
 final class NetworkManager {
 
-    var movies: [Movie] = []
 
     private let domainUrlString = "https://api.themoviedb.org/3"
     private let APIkey = "95bfdaa2a1bd5ee3b9aa276b69888c40"
@@ -66,13 +65,39 @@ final class NetworkManager {
         }
     }
     
+    func fetchVideo(movieID: Int, completionHandler: @escaping ([Videos]) -> Void) {
+        
+        let escapedAdress = ("https://api.themoviedb.org/3/movie/" + String(movieID) + "/videos?api_key=95bfdaa2a1bd5ee3b9aa276b69888c40")
+        if let url = URL(string: escapedAdress) {
+            
+            let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                if let error = error {
+                    print("Error with fetching videos: \(error)")
+                    return
+                }
+
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode)
+                else {
+                    print("Error with the response, unexpected status code: \(String(describing: response))")
+                    return
+            }
+                
+                if let data = data,
+                    let videosResults = try? JSONDecoder().decode(VideoResult.self, from: data) {
+                    completionHandler(videosResults.results ?? [])
+                }
+            })
+            task.resume()
+        }
+    }
+    
     func fetchGenres(completionHandler: @escaping ([Genre]) -> Void){
         let url = URL(string:"https://api.themoviedb.org/3/genre/movie/list?api_key=95bfdaa2a1bd5ee3b9aa276b69888c40&language=en-US")!
 
         let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
 
             if let error = error {
-                print("Error with fetching films: \(error)")
+                print("Error with fetching genres: \(error)")
                 return
             }
 

@@ -21,6 +21,7 @@ struct Movie: Codable, Equatable {
     let title: String
     let overview: String
     let genre_ids: [Int]
+    let video: Bool
     let posterPath: String?
     let releaseDate: String
         
@@ -29,6 +30,7 @@ struct Movie: Codable, Equatable {
         case title
         case overview
         case genre_ids
+        case video
         case posterPath = "poster_path"
         case releaseDate = "release_date"
     }

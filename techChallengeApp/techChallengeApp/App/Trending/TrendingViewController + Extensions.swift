@@ -22,7 +22,11 @@ extension TrendingViewController: UITableViewDelegate, UITableViewDataSource {
         cell.movieLabel.text = moviesList?[indexPath.row].title
         cell.movieLabel.contentMode = .bottomRight
         cell.yearLabel.text = String(moviesList?[indexPath.row].releaseDate.prefix(4) ?? "")
-        cell.movieImage.loadImageUsingCache(withUrl: "https://image.tmdb.org/t/p/original" +  ((moviesList?[indexPath.row].posterPath) ?? ""))
+        var url = "https://image.tmdb.org/t/p/original" + ((moviesList?[indexPath.row].posterPath) ?? "")
+        if moviesList?[indexPath.row].posterPath == nil {
+            url = "https://media.istockphoto.com/photos/error-picture-id1157134529?k=6&m=1157134529&s=612x612&w=0&h=xQvx08rYUPP8vv5c644AIbF7dI_Z1vBxub6gxXJR-9M="
+        }
+        cell.movieImage.loadImageUsingCache(withUrl: url)
         return cell
         
     }

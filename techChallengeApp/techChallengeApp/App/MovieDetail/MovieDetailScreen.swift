@@ -90,9 +90,16 @@ class MovieDetailScreen: UIView, UIScrollViewDelegate {
     
     let youtubeView: WKWebView = {
         let view = WKWebView(frame: .zero)
-        let url = URL(string: "https://www.youtube.com/embed/6JnN1DmbqoU")
-        view.load(URLRequest(url: url!))
         view.allowsLinkPreview = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.medium)
+        view.startAnimating()
+        view.color = AppColors.tab.color
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -109,58 +116,6 @@ class MovieDetailScreen: UIView, UIScrollViewDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    func createGenreLabels(genres:[Genre]){
-        var trailingVariation = movieImage.trailingAnchor
-        for genre in genres {
-            
-            if genres.count > 3 {
-                if genre.name == genres[3].name {
-                    break
-                }
-            }
-            
-            let genreLabel: UILabel = {
-                let view = UILabel(frame: .zero)
-                view.text = genre.name
-                view.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-                view.textAlignment = .center
-                view.sizeToFit()
-                view.textColor = AppColors.white.color
-                view.translatesAutoresizingMaskIntoConstraints = false
-                return view
-            }()
-            
-            let genreLabelStroke: UIView = {
-                let view = UIView(frame: .zero)
-                view.tintColor = .clear
-                view.layer.borderColor = AppColors.white.color.cgColor
-                view.layer.borderWidth = 1
-                view.layer.cornerRadius = 10
-                view.translatesAutoresizingMaskIntoConstraints = false
-                return view
-            }()
-            
-            cardView.addSubview(genreLabel)
-            cardView.addSubview(genreLabelStroke)
-            
-            genreLabel.centerXAnchor.constraint(equalTo: genreLabelStroke.centerXAnchor).isActive = true
-            genreLabel.centerYAnchor.constraint(equalTo: genreLabelStroke.centerYAnchor).isActive = true
-            
-            if genre.name == genres[0].name {
-                genreLabelStroke.trailingAnchor.constraint(equalTo: trailingVariation, constant: 0).isActive = true
-            } else {
-                genreLabelStroke.trailingAnchor.constraint(equalTo: trailingVariation, constant: -5).isActive = true
-            }
-            genreLabelStroke.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant:6).isActive = true
-            genreLabelStroke.widthAnchor.constraint(equalTo: genreLabel.widthAnchor, constant: 15).isActive = true
-            genreLabelStroke.heightAnchor.constraint(equalTo: genreLabel.heightAnchor, constant: 5).isActive = true
-            
-            overviewLabel.topAnchor.constraint(equalTo: genreLabelStroke.bottomAnchor, constant: 8).isActive = true
-
-            trailingVariation = genreLabelStroke.leadingAnchor
-        }
-    }
 }
 
 extension MovieDetailScreen: ViewCode {
@@ -173,6 +128,7 @@ extension MovieDetailScreen: ViewCode {
         cardView.addSubview(yearLabel)
         cardView.addSubview(overviewLabel)
         cardView.addSubview(youtubeView)
+        youtubeView.addSubview(activityIndicator)
         self.backgroundColor = AppColors.background.color
 
     }
@@ -211,11 +167,15 @@ extension MovieDetailScreen: ViewCode {
 
         overviewLabel.widthAnchor.constraint(equalTo: movieImage.widthAnchor).isActive = true
         overviewLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        
+
         youtubeView.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.8).isActive = true
-        youtubeView.heightAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.5).isActive = true
+        youtubeView.heightAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.45).isActive = true
         youtubeView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         youtubeView.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 20).isActive = true
+        
+        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: youtubeView.centerYAnchor).isActive = true
+
     }
     
     func setupAdditionalConfigs() {
