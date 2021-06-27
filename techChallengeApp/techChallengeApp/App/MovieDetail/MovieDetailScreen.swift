@@ -28,6 +28,19 @@ class MovieDetailScreen: UIView, UIScrollViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let scrollView: UIScrollView = {
+        let view = UIScrollView(frame: .zero)//mudar aqui depois
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isScrollEnabled = true
+        return view
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let cardView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = AppColors.card.color
@@ -152,12 +165,14 @@ class MovieDetailScreen: UIView, UIScrollViewDelegate {
 
 extension MovieDetailScreen: ViewCode {
     func buildView() {
-        addSubview(cardView)
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(cardView)
         cardView.addSubview(movieImage)
         cardView.addSubview(movieLabel)
         cardView.addSubview(yearLabel)
         cardView.addSubview(overviewLabel)
-        addSubview(youtubeView)
+        cardView.addSubview(youtubeView)
         self.backgroundColor = AppColors.background.color
 
     }
@@ -165,10 +180,21 @@ extension MovieDetailScreen: ViewCode {
     func setupConstraints() {
         let screenBounds = UIScreen.main.bounds
         
-        cardView.topAnchor.constraint(equalTo: self.topAnchor, constant: screenBounds.height*0.02).isActive = true
+        scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+        
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: 20).isActive = true
+        contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        
+        cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screenBounds.height*0.02).isActive = true
         cardView.bottomAnchor.constraint(equalTo: youtubeView.bottomAnchor, constant: screenBounds.height*0.04).isActive = true
-        cardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.85).isActive = true
-        cardView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        cardView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.85).isActive = true
+        cardView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
 
 
         movieImage.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.8).isActive = true

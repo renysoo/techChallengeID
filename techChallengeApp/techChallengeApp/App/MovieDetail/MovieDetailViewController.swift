@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieDetailViewController: UIViewController {
+class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     var presentedMovie: Movie?
     
@@ -38,9 +38,14 @@ class MovieDetailViewController: UIViewController {
         screen.delegate = self
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        screen.scrollView.contentSize = screen.contentView.bounds.size
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        screen.scrollView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
