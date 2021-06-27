@@ -9,8 +9,7 @@
 import Foundation
 
 struct GenreList: Codable {
-  let count: Int?
-  let results: [Genre]?
+  let genres: [Genre]?
     
     
 }

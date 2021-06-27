@@ -57,9 +57,7 @@ class FavoritesViewController: UIViewController {
     }
     
     func searchFavorite(term: String){
-        print(presentingList)
         presentingList = favoritesList?.filter({$0.title.lowercased().contains(term.lowercased())})
-        print(presentingList)
     }
     
     @objc func dismissKeyboard() {

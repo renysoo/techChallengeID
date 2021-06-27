@@ -12,6 +12,9 @@ class MovieDetailViewController: UIViewController {
     
     var presentedMovie: Movie?
     
+    var genresList: [Genre] = UserDefaults.standard.genres
+
+    
     init(movie: Movie) {
         super.init(nibName: "view", bundle: nil)
         let completeUrl = String("https://image.tmdb.org/t/p/original" + movie.posterPath!)
@@ -19,8 +22,8 @@ class MovieDetailViewController: UIViewController {
         screen.movieImage.loadImageUsingCache(withUrl: completeUrl)
         screen.yearLabel.text = movie.releaseDate
         screen.overviewLabel.text = movie.overview
-        
         presentedMovie = movie
+        getPresentedMovieGenres()
         
     }
     
@@ -84,6 +87,11 @@ class MovieDetailViewController: UIViewController {
         } else {
             return false
         }
+    }
+    
+    func getPresentedMovieGenres(){
+        let presentedMovieGenres = genresList.filter({presentedMovie?.genre_ids.contains($0.id) as! Bool})
+        self.screen.createGenreLabels(genres: presentedMovieGenres)
     }
 }
 
