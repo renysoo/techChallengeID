@@ -1,20 +1,20 @@
 //
-//  TrendingScreen.swift
+//  FavoritesScreen.swift
 //  techChallengeApp
 //
-//  Created by René Melo de Lucena on 24/06/21.
+//  Created by René Melo de Lucena on 26/06/21.
 //  Copyright © 2021 René Melo de Lucena. All rights reserved.
 //
 
 import UIKit
 
-protocol TrendingScreenDelegate {
+protocol FavoritesScreenDelegate {
     
 }
 
-class TrendingScreen: UIView {
+class FavoritesScreen: UIView {
     
-    var delegate: TrendingScreenDelegate!
+    var delegate: FavoritesScreenDelegate!
     
     init() {
         
@@ -58,14 +58,25 @@ class TrendingScreen: UIView {
         return table
     }()
     
-    
+    let noFavoritesLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.text = "You don't have any movie\n on your favorites list :("
+        view.numberOfLines = 2
+        view.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        view.textAlignment = .center
+        view.sizeToFit()
+        view.textColor = AppColors.white.color
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
 }
 
-extension TrendingScreen: ViewCode {
+extension FavoritesScreen: ViewCode {
     func buildView() {
         addSubview(moviesTableView)
         addSubview(searchBar)
+        addSubview(noFavoritesLabel)
         self.backgroundColor = AppColors.background.color
     }
     
@@ -80,6 +91,10 @@ extension TrendingScreen: ViewCode {
         moviesTableView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: 0).isActive = true
         moviesTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         moviesTableView.rowHeight = 150
+        
+        noFavoritesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        noFavoritesLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+
     }
     
     func setupAdditionalConfigs() {

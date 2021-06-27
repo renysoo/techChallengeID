@@ -10,12 +10,18 @@ import UIKit
 
 class MovieDetailViewController: UIViewController {
     
-    init(url:String, title: String, year: String, overview: String) {
+    var presentedMovie: Movie?
+    
+    init(movie: Movie) {
         super.init(nibName: "view", bundle: nil)
-        screen.movieLabel.text = title
-        screen.movieImage.loadImageUsingCache(withUrl: url)
-        screen.yearLabel.text = year
-        screen.overviewLabel.text = overview
+        let completeUrl = String("https://image.tmdb.org/t/p/original" + movie.posterPath!)
+        screen.movieLabel.text = movie.title
+        screen.movieImage.loadImageUsingCache(withUrl: completeUrl)
+        screen.yearLabel.text = movie.releaseDate
+        screen.overviewLabel.text = movie.overview
+        
+        presentedMovie = movie
+        
     }
     
     required init?(coder: NSCoder) {
@@ -33,6 +39,51 @@ class MovieDetailViewController: UIViewController {
         
         super.viewDidLoad()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        changeColorFavoriteButton()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+
+    @objc func favoriteButton() {
+        if checkFavoriteStatus() {
+            
+            while UserDefaults.standard.favoriteMovies.contains(presentedMovie!) {
+                if let itemToRemoveIndex = UserDefaults.standard.favoriteMovies.firstIndex(of: presentedMovie!) {
+                UserDefaults.standard.favoriteMovies.remove(at: itemToRemoveIndex)
+                }
+            }
+            
+        } else {
+            UserDefaults.standard.favoriteMovies.append(presentedMovie!)
+        }
+        changeColorFavoriteButton()
+    }
+    
+    func changeColorFavoriteButton(){
+        if checkFavoriteStatus() {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButton))
+            self.navigationItem.rightBarButtonItem?.tintColor = AppColors.red.color
+        } else {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favoriteButton))
+            self.navigationItem.rightBarButtonItem?.tintColor = AppColors.white.color
+        }
+    }
+    
+    func checkFavoriteStatus() -> Bool {
+        if UserDefaults.standard.favoriteMovies.contains(presentedMovie!){
+            return true
+        } else {
+            return false
+        }
     }
 }
 

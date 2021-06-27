@@ -1,21 +1,23 @@
 //
-//  ViewController.swift
+//  FavoritesViewController.swift
 //  techChallengeApp
 //
-//  Created by René Melo de Lucena on 24/06/21.
+//  Created by René Melo de Lucena on 26/06/21.
 //  Copyright © 2021 René Melo de Lucena. All rights reserved.
 //
 
+import Foundation
+
+
 import UIKit
 
-class TrendingViewController: UIViewController {
+class FavoritesViewController: UIViewController {
 
+    var presentingList: [Movie]?
     
-    var moviesList: [Movie]?
-    
-    let network = NetworkManager()
+    var favoritesList: [Movie]?
 
-    let screen = TrendingScreen()
+    let screen = FavoritesScreen()
     
     var searchTask: DispatchWorkItem?
 
@@ -24,42 +26,29 @@ class TrendingViewController: UIViewController {
         screen.delegate = self
     }
     
-    func fetchTrendingMovies() {
-        network.fetchTrending { [weak self] (movies) in
-            self?.moviesList = movies
-            DispatchQueue.main.async {
-                self?.screen.moviesTableView.reloadData()
-                
-            }
-        }
-    }
-    
-    func searchMovieBy(searchTerm: String) {
-        network.fetchSearch(term: searchTerm) { [weak self] (movies) in
-            self?.moviesList = movies
-             DispatchQueue.main.async {
-                self?.screen.moviesTableView.reloadData()
-            }
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         screen.searchBar.delegate = self
         screen.moviesTableView.delegate = self
         screen.moviesTableView.dataSource = self
         screen.moviesTableView.register(MovieCustomCell.self, forCellReuseIdentifier: "moviesCell")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false 
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
-        fetchTrendingMovies()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        favoritesList = UserDefaults.standard.favoriteMovies
+        presentingList = favoritesList
+        screen.moviesTableView.reloadData()
+        if favoritesList!.count == 0 {
+            screen.noFavoritesLabel.isHidden = false
+        } else {
+            screen.noFavoritesLabel.isHidden = true
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,11 +56,17 @@ class TrendingViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    func searchFavorite(term: String){
+        print(presentingList)
+        presentingList = favoritesList?.filter({$0.title.lowercased().contains(term.lowercased())})
+        print(presentingList)
+    }
+    
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
+    
 }
-
 
 

@@ -21,11 +21,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: firstScene)
         
-        var firstViewController = TrendingViewController()
         
-//        let firstViewController = MovieDetailViewController()
+        var trendingViewController = TrendingViewController()
+        let trendingNavigationController = UINavigationController(rootViewController: trendingViewController)
+        trendingNavigationController.navigationBar.isHidden = true
+        trendingNavigationController.navigationBar.barTintColor = AppColors.tab.color
+        trendingNavigationController.navigationBar.tintColor = AppColors.white.color
+        trendingNavigationController.navigationBar.isTranslucent = false
+        
+        
+        trendingNavigationController.tabBarItem = UITabBarItem(title: "Trending", image: UIImage(systemName: "star")?.withTintColor(AppColors.white.color), tag: 0)
+        
+        var favoriteViewController = FavoritesViewController()
+        let favoritesNavigationController = UINavigationController(rootViewController: favoriteViewController)
+        favoritesNavigationController.navigationBar.isHidden = true
+        favoritesNavigationController.navigationBar.barTintColor = AppColors.tab.color
+        favoritesNavigationController.navigationBar.tintColor = AppColors.white.color
+        favoritesNavigationController.navigationBar.isTranslucent = false
 
-        window?.rootViewController = firstViewController
+        
+        favoritesNavigationController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart")?.withTintColor(AppColors.white.color), tag: 0)
+        
+        let tabBarController = UITabBarController()
+        let controllers = [trendingNavigationController,favoritesNavigationController]
+        tabBarController.viewControllers = controllers
+        tabBarController.tabBar.barTintColor = AppColors.tab.color
+        tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.tintColor = AppColors.white.color
+
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
 
     }
