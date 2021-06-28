@@ -51,8 +51,6 @@ class FavoritesScreen: UIView {
         table.isEditing = false
         table.allowsSelection = true
         table.separatorStyle = .none
-//        table.rowHeight = CGFloat(88)
-//        table.contentInset.bottom = UIScreen.main.bounds.height/10
         table.separatorStyle = UITableViewCell.SeparatorStyle.none
         table.showsVerticalScrollIndicator = false
         return table
@@ -70,6 +68,18 @@ class FavoritesScreen: UIView {
         return view
     }()
     
+    let noResultsLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.text = "We couldn't find the movie\nyou were looking for :("
+        view.numberOfLines = 2
+        view.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        view.textAlignment = .center
+        view.sizeToFit()
+        view.textColor = AppColors.white.color
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
 }
 
 extension FavoritesScreen: ViewCode {
@@ -77,6 +87,7 @@ extension FavoritesScreen: ViewCode {
         addSubview(moviesTableView)
         addSubview(searchBar)
         addSubview(noFavoritesLabel)
+        addSubview(noResultsLabel)
         self.backgroundColor = AppColors.background.color
     }
     
@@ -88,17 +99,20 @@ extension FavoritesScreen: ViewCode {
         
         moviesTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
         moviesTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        moviesTableView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: 0).isActive = true
+        moviesTableView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.9, constant: 0).isActive = true
         moviesTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         moviesTableView.rowHeight = 150
         
         noFavoritesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         noFavoritesLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        
+        noResultsLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        noResultsLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 
     }
     
     func setupAdditionalConfigs() {
-        
+        noResultsLabel.isHidden = true
     }
     
 }

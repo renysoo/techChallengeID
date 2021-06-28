@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import WebKit
 
 protocol MovieDetailScreenDelegate {
     
 }
 
-class MovieDetailScreen: UIView {
+class MovieDetailScreen: UIView, UIScrollViewDelegate {
     
     var delegate: MovieDetailScreenDelegate!
     
@@ -26,6 +27,19 @@ class MovieDetailScreen: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    let scrollView: UIScrollView = {
+        let view = UIScrollView(frame: .zero)//mudar aqui depois
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isScrollEnabled = true
+        return view
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     let cardView: UIView = {
         let view = UIView(frame: .zero)
@@ -74,6 +88,22 @@ class MovieDetailScreen: UIView {
         return view
     }()
     
+    let youtubeView: WKWebView = {
+        let view = WKWebView(frame: .zero)
+        view.allowsLinkPreview = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView.init(style: UIActivityIndicatorView.Style.medium)
+        view.startAnimating()
+        view.color = AppColors.tab.color
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let overviewLabel: UILabel = {
         let view = UILabel(frame: .zero)
         view.text = "A film version of the Broadway musical in which Usnavi, a sympathetic New York bodega owner, saves every penny every day as he imagines and sings about a better life."
@@ -90,11 +120,15 @@ class MovieDetailScreen: UIView {
 
 extension MovieDetailScreen: ViewCode {
     func buildView() {
-        addSubview(cardView)
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(cardView)
         cardView.addSubview(movieImage)
         cardView.addSubview(movieLabel)
         cardView.addSubview(yearLabel)
         cardView.addSubview(overviewLabel)
+        cardView.addSubview(youtubeView)
+        youtubeView.addSubview(activityIndicator)
         self.backgroundColor = AppColors.background.color
 
     }
@@ -102,10 +136,21 @@ extension MovieDetailScreen: ViewCode {
     func setupConstraints() {
         let screenBounds = UIScreen.main.bounds
         
-        cardView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75).isActive = true
-        cardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.85).isActive = true
-        cardView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        cardView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+        
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: 20).isActive = true
+        contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        
+        cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screenBounds.height*0.02).isActive = true
+        cardView.bottomAnchor.constraint(equalTo: youtubeView.bottomAnchor, constant: screenBounds.height*0.04).isActive = true
+        cardView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.85).isActive = true
+        cardView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
 
 
         movieImage.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.8).isActive = true
@@ -119,16 +164,21 @@ extension MovieDetailScreen: ViewCode {
         
         yearLabel.topAnchor.constraint(equalTo: movieLabel.bottomAnchor, constant: 5).isActive = true
         yearLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        
-        
-        //Corrigir quando adicionar os generos
+
         overviewLabel.widthAnchor.constraint(equalTo: movieImage.widthAnchor).isActive = true
         overviewLabel.trailingAnchor.constraint(equalTo: movieImage.trailingAnchor).isActive = true
-        overviewLabel.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant: 5).isActive = true
+
+        youtubeView.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.8).isActive = true
+        youtubeView.heightAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.45).isActive = true
+        youtubeView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        youtubeView.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 20).isActive = true
+        
+        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: youtubeView.centerYAnchor).isActive = true
+
     }
     
     func setupAdditionalConfigs() {
-        
     }
     
     

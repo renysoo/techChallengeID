@@ -7,21 +7,28 @@
 //
 
 import UIKit
+import WebKit
 
-class MovieDetailViewController: UIViewController {
+class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     var presentedMovie: Movie?
     
+    var genresList: [Genre] = UserDefaults.standard.genres
+
     init(movie: Movie) {
         super.init(nibName: "view", bundle: nil)
-        let completeUrl = String("https://image.tmdb.org/t/p/original" + movie.posterPath!)
+        var completeUrl = String("https://image.tmdb.org/t/p/original" + (movie.posterPath ?? ""))
+        if movie.posterPath == nil {
+            completeUrl = "https://media.istockphoto.com/photos/error-picture-id1157134529?k=6&m=1157134529&s=612x612&w=0&h=xQvx08rYUPP8vv5c644AIbF7dI_Z1vBxub6gxXJR-9M="
+        }
+
         screen.movieLabel.text = movie.title
         screen.movieImage.loadImageUsingCache(withUrl: completeUrl)
         screen.yearLabel.text = movie.releaseDate
         screen.overviewLabel.text = movie.overview
-        
         presentedMovie = movie
-        
+        getPresentedMovieGenres()
+        getMovieVideo()
     }
     
     required init?(coder: NSCoder) {
@@ -33,12 +40,17 @@ class MovieDetailViewController: UIViewController {
     override func loadView() {
         self.view = screen
         screen.delegate = self
+        screen.youtubeView.navigationDelegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        screen.scrollView.contentSize = screen.contentView.bounds.size
     }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        screen.scrollView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,8 +97,37 @@ class MovieDetailViewController: UIViewController {
             return false
         }
     }
+    
+    func getPresentedMovieGenres(){
+        let presentedMovieGenres = genresList.filter({presentedMovie?.genre_ids.contains($0.id) as! Bool})
+        self.screen.createGenreLabels(genres: presentedMovieGenres)
+    }
+    
+    func getMovieVideo(){
+        NetworkManager().fetchVideo(movieID: presentedMovie!.id, completionHandler: { [weak self] (videos) in
+            DispatchQueue.main.async {
+                if videos.contains(where: {$0.site == "YouTube"}) {
+                    let videoToShow = videos.filter({$0.site == "YouTube"})
+                    let urlString = "https://www.youtube.com/embed/" + videoToShow[0].key
+                    let url = URL(string: urlString)
+                    let request = URLRequest(url: url!)
+                    self?.screen.youtubeView.load(request)
+                } else {
+                    let url = URL(string: "https://media.istockphoto.com/photos/error-picture-id1157134529?k=6&m=1157134529&s=612x612&w=0&h=xQvx08rYUPP8vv5c644AIbF7dI_Z1vBxub6gxXJR-9M=")
+                    self?.screen.youtubeView.load(URLRequest(url: url!))
+                }
+            }
+        })
+    }
 }
 
-extension MovieDetailViewController: MovieDetailScreenDelegate {
+extension MovieDetailViewController: MovieDetailScreenDelegate, WKNavigationDelegate {
     
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        screen.activityIndicator.isHidden = false
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        screen.activityIndicator.isHidden = true
+    }
 }

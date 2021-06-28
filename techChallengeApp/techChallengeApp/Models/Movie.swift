@@ -21,6 +21,7 @@ struct Movie: Codable, Equatable {
     let title: String
     let overview: String
     let genre_ids: [Int]
+    let video: Bool
     let posterPath: String?
     let releaseDate: String
         
@@ -29,19 +30,9 @@ struct Movie: Codable, Equatable {
         case title
         case overview
         case genre_ids
+        case video
         case posterPath = "poster_path"
         case releaseDate = "release_date"
     }
 }
 
-extension UserDefaults {
-    var favoriteMovies: [Movie] {
-        get {
-            guard let data = UserDefaults.standard.data(forKey: "favorite") else { return [] }
-            return (try? PropertyListDecoder().decode([Movie].self, from: data)) ?? []
-        }
-        set {
-            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey: "favorite")
-        }
-    }
-}
