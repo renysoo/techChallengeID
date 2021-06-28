@@ -44,11 +44,6 @@ class FavoritesViewController: UIViewController {
         favoritesList = UserDefaults.standard.favoriteMovies
         presentingList = favoritesList
         screen.moviesTableView.reloadData()
-        if favoritesList!.count == 0 {
-            screen.noFavoritesLabel.isHidden = false
-        } else {
-            screen.noFavoritesLabel.isHidden = true
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
