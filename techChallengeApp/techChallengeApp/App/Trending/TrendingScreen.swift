@@ -87,7 +87,7 @@ extension TrendingScreen: ViewCode {
         
         moviesTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
         moviesTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        moviesTableView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: 0).isActive = true
+        moviesTableView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.9, constant: 0).isActive = true
         moviesTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         moviesTableView.rowHeight = 150
         

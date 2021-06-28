@@ -82,7 +82,7 @@ extension MovieCustomCell: ViewCode {
     func setupConstraints() {
         
         cardView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        cardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.85).isActive = true
+        cardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.95).isActive = true
         cardView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         cardView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
@@ -96,7 +96,7 @@ extension MovieCustomCell: ViewCode {
         yearLabel.bottomAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: -2).isActive = true
         yearLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20).isActive = true
         
-        movieLabel.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 0.56).isActive = true
+        movieLabel.leadingAnchor.constraint(equalTo: movieImage.trailingAnchor, constant: 20).isActive = true
         movieLabel.bottomAnchor.constraint(equalTo: yearLabel.topAnchor, constant: -5).isActive = true
         movieLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20).isActive = true
         

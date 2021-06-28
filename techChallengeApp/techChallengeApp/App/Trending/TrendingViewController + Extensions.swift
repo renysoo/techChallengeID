@@ -11,7 +11,7 @@ import UIKit
 extension TrendingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if moviesList!.count == 0 {
+        if moviesList?.count == 0 {
             screen.noResultsLabel.isHidden = false
         } else {
             screen.noResultsLabel.isHidden = true
