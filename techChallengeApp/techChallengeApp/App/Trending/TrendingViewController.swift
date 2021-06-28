@@ -18,6 +18,8 @@ class TrendingViewController: UIViewController {
     let screen = TrendingScreen()
     
     var searchTask: DispatchWorkItem?
+    
+    let refreshControl = UIRefreshControl()
 
     override func loadView() {
         self.view = screen
@@ -29,9 +31,13 @@ class TrendingViewController: UIViewController {
             self?.moviesList = movies
             DispatchQueue.main.async {
                 self?.screen.moviesTableView.reloadData()
-                
+                self?.refreshControl.endRefreshing()
             }
         }
+    }
+    
+    @objc func refreshTable(){
+        fetchTrendingMovies()
     }
     
     func searchMovieBy(searchTerm: String) {
@@ -43,13 +49,19 @@ class TrendingViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    fileprivate func setupTableView() {
         screen.searchBar.delegate = self
         screen.moviesTableView.delegate = self
         screen.moviesTableView.dataSource = self
+        screen.moviesTableView.refreshControl = refreshControl
+        refreshControl.tintColor = AppColors.white.color
+        refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
         screen.moviesTableView.register(MovieCustomCell.self, forCellReuseIdentifier: "moviesCell")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupTableView()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false 
