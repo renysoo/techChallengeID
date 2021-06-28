@@ -111,8 +111,6 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
                     let urlString = "https://www.youtube.com/embed/" + videoToShow[0].key
                     let url = URL(string: urlString)
                     let request = URLRequest(url: url!)
-                    print(url)
-                    print(request)
                     self?.screen.youtubeView.load(request)
                 } else {
                     let url = URL(string: "https://media.istockphoto.com/photos/error-picture-id1157134529?k=6&m=1157134529&s=612x612&w=0&h=xQvx08rYUPP8vv5c644AIbF7dI_Z1vBxub6gxXJR-9M=")

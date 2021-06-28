@@ -11,7 +11,18 @@ import UIKit
 extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presentingList?.count ?? 0
+        if favoritesList!.count == 0 {
+            screen.noFavoritesLabel.isHidden = false
+            screen.noResultsLabel.isHidden = true
+        } else if presentingList?.count == 0 {
+            screen.noFavoritesLabel.isHidden = true
+            screen.noResultsLabel.isHidden = false
+        } else {
+            screen.noFavoritesLabel.isHidden = true
+            screen.noResultsLabel.isHidden = true
+        }
+        
+        return presentingList?.count ?? 0
     }
     
 
